@@ -6,8 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Users.Persistence;
 
-public class UsersRepository(AppDbContext _dbContext) : IUsersRepository
+public class UsersRepository : IUsersRepository
 {
+    private readonly AppDbContext _dbContext;
+
+    public UsersRepository(AppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public async Task AddAsync(User user, CancellationToken cancellationToken)
     {
         await _dbContext.AddAsync(user, cancellationToken);

@@ -30,7 +30,7 @@ public static class DependencyInjection
             .AddBackgroundServices(configuration)
             .AddAuthentication(configuration)
             .AddAuthorization()
-            .AddPersistence();
+            .AddPersistence(configuration);
 
         return services;
     }
@@ -76,12 +76,25 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services)
+    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source = CleanArchitecture.sqlite"));
+        try
+        {
+            var connectionString = configuration.GetConnectionString("SqlConnection");
 
-        services.AddScoped<IRemindersRepository, RemindersRepository>();
-        services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(connectionString));
+
+            services.AddScoped<IRemindersRepository, RemindersRepository>();
+            services.AddScoped<IUsersRepository, UsersRepository>();
+        }
+        catch (Exception ex)
+        {
+            // Log the exception details
+            Console.WriteLine("Error configuring DbContext: " + ex.Message);
+
+            // Consider throwing a more specific exception to signal connection issues
+        }
 
         return services;
     }
