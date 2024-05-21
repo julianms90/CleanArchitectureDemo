@@ -3,6 +3,7 @@ using System;
 using CleanArchitecture.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -15,28 +16,32 @@ namespace CleanArchitecture.Infrastructure.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("CleanArchitecture.Domain.Reminders.Reminder", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("DateTime")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDismissed")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("bit");
 
                     b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -46,28 +51,28 @@ namespace CleanArchitecture.Infrastructure.Migrations
             modelBuilder.Entity("CleanArchitecture.Domain.Users.User", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("_dismissedReminderIds")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("DismissedReminderIds");
 
                     b.Property<string>("_reminderIds")
                         .IsRequired()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("ReminderIds");
 
                     b.HasKey("Id");
@@ -80,15 +85,15 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.OwnsOne("CleanArchitecture.Domain.Subscriptions.Subscription", "Subscription", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<Guid>("Id")
-                                .HasColumnType("TEXT")
+                                .HasColumnType("uniqueidentifier")
                                 .HasColumnName("SubscriptionId");
 
                             b1.Property<string>("SubscriptionType")
                                 .IsRequired()
-                                .HasColumnType("TEXT");
+                                .HasColumnType("nvarchar(max)");
 
                             b1.HasKey("UserId");
 
@@ -101,11 +106,11 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.OwnsOne("CleanArchitecture.Domain.Users.Calendar", "_calendar", b1 =>
                         {
                             b1.Property<Guid>("UserId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("_calendar")
                                 .IsRequired()
-                                .HasColumnType("TEXT")
+                                .HasColumnType("nvarchar(max)")
                                 .HasColumnName("CalendarDictionary");
 
                             b1.HasKey("UserId");

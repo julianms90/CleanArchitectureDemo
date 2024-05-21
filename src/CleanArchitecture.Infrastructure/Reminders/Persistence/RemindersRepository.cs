@@ -6,8 +6,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Reminders.Persistence;
 
-public class RemindersRepository(AppDbContext _dbContext) : IRemindersRepository
+public class RemindersRepository : IRemindersRepository
 {
+    private readonly AppDbContext _dbContext;
+
+    public RemindersRepository(AppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
     public async Task AddAsync(Reminder reminder, CancellationToken cancellationToken)
     {
         await _dbContext.AddAsync(reminder, cancellationToken);
