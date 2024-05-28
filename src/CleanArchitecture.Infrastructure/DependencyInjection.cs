@@ -3,6 +3,7 @@ using System.Net.Mail;
 
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Common;
+using CleanArchitecture.Infrastructure.Persons.Persistence;
 using CleanArchitecture.Infrastructure.Reminders.BackgroundServices;
 using CleanArchitecture.Infrastructure.Reminders.Persistence;
 using CleanArchitecture.Infrastructure.Security;
@@ -87,6 +88,7 @@ public static class DependencyInjection
 
             services.AddScoped<IRemindersRepository, RemindersRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
+            services.AddScoped<IPersonsRepository, PersonsRepository>();
         }
         catch (Exception ex)
         {

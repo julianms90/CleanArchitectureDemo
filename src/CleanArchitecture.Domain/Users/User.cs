@@ -1,4 +1,5 @@
 using CleanArchitecture.Domain.Common;
+using CleanArchitecture.Domain.Persons;
 using CleanArchitecture.Domain.Reminders;
 using CleanArchitecture.Domain.Subscriptions;
 using CleanArchitecture.Domain.Users.Events;
@@ -24,6 +25,8 @@ public class User : Entity
     public string FirstName { get; } = null!;
 
     public string LastName { get; } = null!;
+
+    public virtual Person Person { get; } = new Person();
 
     public User(
         Guid id,
