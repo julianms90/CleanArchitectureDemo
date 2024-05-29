@@ -30,7 +30,7 @@ namespace CleanArchitecture.Domain.Addresses
         public string City { get; } = null!;
         public string Province { get; } = null!;
         public string Country { get; } = null!;
-        public virtual Person Person { get; } = new Person();
+        public Person Person { get; private set; } = null!;
         private Address() { }
     }
 }
