@@ -34,8 +34,5 @@ public class PersonConfigurations : IEntityTypeConfiguration<Person>
 
         builder.HasOne(t => t.Address).WithOne(p => p.Person)
             .HasForeignKey<Person>(q => q.AddressId);
-
-        builder.HasOne(t => t.User).WithOne(p => p.Person)
-            .HasForeignKey<Person>(q => q.UserId);
     }
 }

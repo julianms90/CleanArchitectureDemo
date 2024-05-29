@@ -26,8 +26,6 @@ public class User : Entity
 
     public string LastName { get; } = null!;
 
-    public virtual Person Person { get; } = new Person();
-
     public User(
         Guid id,
         string firstName,
