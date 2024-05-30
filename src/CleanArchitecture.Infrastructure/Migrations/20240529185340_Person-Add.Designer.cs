@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CleanArchitecture.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240529001542_Person-AddClass")]
-    partial class PersonAddClass
+    [Migration("20240529185340_Person-Add")]
+    partial class PersonAdd
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,24 +25,12 @@ namespace CleanArchitecture.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Addresses.Address", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Address");
-                });
-
             modelBuilder.Entity("CleanArchitecture.Domain.Persons.Person", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWSEQUENTIALID()");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -71,14 +59,7 @@ namespace CleanArchitecture.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId")
-                        .IsUnique();
 
                     b.ToTable("Persons");
                 });
@@ -141,17 +122,6 @@ namespace CleanArchitecture.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CleanArchitecture.Domain.Persons.Person", b =>
-                {
-                    b.HasOne("CleanArchitecture.Domain.Addresses.Address", "Address")
-                        .WithOne("Person")
-                        .HasForeignKey("CleanArchitecture.Domain.Persons.Person", "AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Address");
-                });
-
             modelBuilder.Entity("CleanArchitecture.Domain.Users.User", b =>
                 {
                     b.OwnsOne("CleanArchitecture.Domain.Subscriptions.Subscription", "Subscription", b1 =>
@@ -197,12 +167,6 @@ namespace CleanArchitecture.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("_calendar");
-                });
-
-            modelBuilder.Entity("CleanArchitecture.Domain.Addresses.Address", b =>
-                {
-                    b.Navigation("Person")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
