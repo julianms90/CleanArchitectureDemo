@@ -9,12 +9,11 @@ namespace CleanArchitecture.Domain.Persons
         public Person(
             string firstName,
             string lastName,
-            DateTime dateOfBirth,
+            DateTime? dateOfBirth,
             string documentType,
             string documentNumber,
             string email,
-            string phoneNumber,
-            Address address)
+            string phoneNumber)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -23,20 +22,17 @@ namespace CleanArchitecture.Domain.Persons
             DocumentType = documentType;
             Email = email;
             PhoneNumber = phoneNumber;
-            Address = address;
         }
 
-        private Person() { }
-
-        public Guid AddressId { get; set; }
+        // public Guid AddressId { get; set; }
         public string FirstName { get; } = null!;
         public string LastName { get; } = null!;
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; } = DateTime.MinValue;
         public string DocumentType { get; } = null!;
         public string DocumentNumber { get; } = null!;
         public string Email { get; } = null!;
         public string PhoneNumber { get; } = null!;
-        public string UserId { get; } = null!;
-        public Address Address { get; private set; } = null!;
+
+        // public Address Address { get; private set; } = null!;
     }
 }

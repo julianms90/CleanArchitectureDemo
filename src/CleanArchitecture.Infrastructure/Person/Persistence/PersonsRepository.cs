@@ -21,7 +21,8 @@ public class PersonsRepository : IPersonsRepository
 
     public async Task<Person?> GetByIdAsync(Guid PersonId, CancellationToken cancellationToken)
     {
-        return await _dbContext.Persons.FindAsync(PersonId, cancellationToken);
+        Person? person = await _dbContext.Persons.FindAsync(PersonId, cancellationToken);
+        return person == null ? null : person;
     }
 
     public async Task RemoveAsync(Person Person, CancellationToken cancellationToken)
